@@ -1,18 +1,15 @@
-import { Injectable }               from '@nestjs/common';
-import { InjectRepository }         from '@nestjs/typeorm';
-import { Repository, DeleteResult } from 'typeorm';
-import { validate }                 from 'class-validator';
+import { Injectable } from '@nestjs/common';
+import { validate }   from 'class-validator';
 
 import { CreateUserDto } from './dto/create-user';
-import { UserEntity } from '../../entities/user.entity';
 import { CustomException } from '../../shared/models/custom-exception';
+import { UserRepository } from './repository';
 
 @Injectable()
 export class UserService {
 
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: UserRepository,
   ) {}
 
   public async findAll() {
@@ -26,10 +23,12 @@ export class UserService {
       throw new CustomException('Username must be unique.');
     }
 
-    let newUser = new UserEntity();
+    let newUser = this.userRepository.createModel();
     newUser.username = createUserDto.username;
     newUser.email = createUserDto.email;
     newUser.password = createUserDto.password;
+    newUser.firstName = createUserDto.firstName;
+    newUser.lastName = createUserDto.lastName;
 
     const errors = await validate(newUser);
     if (errors.length > 0) {

@@ -1,9 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from "typeorm";
-import { IsEmail, Validate } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from "typeorm";
+import { IsEmail } from 'class-validator';
 import * as crypto from 'crypto';
+import { Exclude } from "class-transformer";
+
+import { BaseEntity } from "../shared/base/entity";
 
 @Entity('user')
-export class UserEntity {
+export class UserEntity extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,15 +14,22 @@ export class UserEntity {
   @Column({ unique: true })
   username: string;
 
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
   @Column({ nullable: true })
   @IsEmail()
   email: string;
 
-  @Column({  })
+  @Column()
+  @Exclude()
   password: string;
 
   @BeforeInsert()
-  hashPassword() {
+  preCreate() {
     this.password = crypto.createHmac('sha256', this.password).digest('hex');
   }
 }

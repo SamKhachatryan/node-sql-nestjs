@@ -24,7 +24,7 @@
     "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
     "jsonwebtoken": "^8.1.1",
-    "mysql": "^2.15.0",
+    "mssql": "^5.1.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.4.0",
     "swagger-ui-express": "^4.0.7",

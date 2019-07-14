@@ -1,6 +1,6 @@
 import { Get, Post, Delete, Param, Controller, UsePipes, Body, UseGuards } from '@nestjs/common';
 
-import { UserService } from './user.service';
+import { UserService } from './service';
 import { CreateUserDto } from './dto/create-user';
 import { ValidationPipe } from '../../shared/pipes/validation.pipe';
 
@@ -15,7 +15,9 @@ import { FindOneParams } from './dto/find-one-params';
 @Controller('users')
 export class UserController {
 
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+  ) {}
 
   @Get('me')
   @UseGuards(AuthGuard)

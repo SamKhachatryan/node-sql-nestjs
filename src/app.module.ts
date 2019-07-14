@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 
 import { RolesGuard } from './shared/guards/role';
 
-import { UserModule } from './modules/user/user.module';
+import { UserModule } from './modules/user/module';
 
 import { ResponseInterceptor } from './shared/interceptors/response';
 import { ErrorsInterceptor } from './shared/interceptors/error';
