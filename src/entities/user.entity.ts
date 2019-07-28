@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, AfterLoad } from "typeorm";
 import { IsEmail } from 'class-validator';
 import * as crypto from 'crypto';
 import { Exclude } from "class-transformer";
@@ -29,7 +29,21 @@ export class UserEntity extends BaseEntity {
   password: string;
 
   @BeforeInsert()
-  preCreate() {
+  private preCreate() {
     this.password = crypto.createHmac('sha256', this.password).digest('hex');
   }
+
+  @BeforeUpdate()
+  private preUpdate() {
+    if (this.password !== this.passwordTmp) {
+      this.password = crypto.createHmac('sha256', this.password).digest('hex');
+    }
+  }
+
+  @AfterLoad()
+  private setPasswordTmp() {
+    this.passwordTmp = this.password;
+  }
+
+  private passwordTmp: string;
 }

@@ -1,21 +1,14 @@
-import { BeforeInsert, Column, BeforeUpdate } from "typeorm";
+import { Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 export class BaseEntity {
 
-  @Column('datetime')
+  @CreateDateColumn({ type: 'datetime' })
   createdDt: Date;
 
-  @Column('datetime')
+  @CreateDateColumn()
+  @UpdateDateColumn({ type: 'datetime' })
   updatedDt: Date;
 
-  @BeforeInsert()
-  private basePreCreate() {
-    this.createdDt = new Date();
-    this.updatedDt = new Date();
-  }
-
-  @BeforeUpdate()
-  private basePreUpdate() {
-    this.updatedDt = new Date();
-  }
+  @Column({ type: 'boolean', default: false })
+  isDeleted: boolean;
 }
