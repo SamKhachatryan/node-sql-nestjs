@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Exclude } from "class-transformer";
 
 export class BaseEntity {
 
@@ -10,5 +11,6 @@ export class BaseEntity {
   updatedDt: Date;
 
   @Column({ type: 'boolean', default: false })
+  @Exclude()
   isDeleted: boolean;
 }
